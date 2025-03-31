@@ -1,0 +1,19 @@
+﻿@model IEnumerable<JobTracking.Models.Job>
+
+<h2>Job List</h2>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+    </tr>
+    @foreach (var job in Model)
+    {
+        <tr>
+            <td>@job.Title</td>
+            <td>@job.Description</td>
+            <td>@job.Status</td>
+        </tr>
+    }
+</table>
+<a href="/Job/Create">Create New Job</a>
