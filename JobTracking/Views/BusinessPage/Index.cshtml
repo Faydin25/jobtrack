@@ -1,0 +1,119 @@
+@model MyApplication.Web.Models.BusinessPageViewModel
+@using TaskStatus = MyApplication.Web.Models.TaskStatus;
+
+@{
+    ViewData["Title"] = "Business Page";
+}
+
+<script src="~/js/site.js"></script>
+
+
+<div class="task-container">
+    <h1 style="text-align:center">Görevler</h1>
+    <br />
+    <br />
+
+    <!-- Yeni Görev Ekleme Formu -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#taskModal">
+        Görev Ekle
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="taskModalLabel">Yeni Görev Ekle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form içeriði burada -->
+                    <form method="post" action="@Url.Action("CreateTask", "BusinessPage")">
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label for="title">Baþlýk:</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Açýklama:</label>
+                            <textarea class="form-control" id="description" name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Durum:</label>
+                            <select class="form-control" id="status" name="status">
+                                @foreach (var status in Enum.GetValues(typeof(TaskStatus)))
+                                {
+                                <option value="@status">@status</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="userId">Kullanýcý:</label>
+                            <select class="form-control" id="userId" name="userId" required>
+                                @foreach (var user in Model.Users)
+                                {
+                                <option value="@user.Id">@user.UserName</option>
+                                }
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Görev Oluþtur</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    }
+
+    <br />
+    <br />
+    <form>
+        <label for="userId">Kullanýcý Seçin:</label>
+        <select id="userId" name="userId" class="form-control" onchange="this.form.submit()">
+            <option value="">Lütfen bir kullanýcý seçiniz</option>
+            @foreach (var user in Model.Users)
+            {
+            <option value="@user.Id">@user.UserName</option>
+            }
+        </select>
+    </form>
+
+    <br /><br />
+    <div class="container-fluid ">
+        <div class="row">
+            @foreach (var status in Enum.GetValues(typeof(TaskStatus)))
+            {
+            <div class="col turkcell-border mx-1">
+                <h1 class="text-center">@status.ToString()</h1>
+                @foreach (var task in Model.Tasks.Where(t => t.Status == (TaskStatus)status))
+                    {
+                <div class="card mb-1">
+                    <div class="card-header">
+                        @task.Title
+                    </div>
+                    <div class="card-body">
+                        <!-- Açýklama düzenleme formu -->
+                        <form method="post" action="@Url.Action("EditDescription", "BusinessPage")">
+                            <input type="hidden" name="taskId" value="@task.TaskId" />
+                            <textarea name="description" class="form-control">@task.Description</textarea>
+                            <p>Oluþturulma Tarihi: @task.CreatedDate.ToString("dd/MM/yyyy ")</p>
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                        </form>
+                        <!-- Silme butonu için form -->
+                        <form method="post" action="@Url.Action("DeleteTask", "BusinessPage", new { taskId = task.TaskId })" onsubmit="return confirm('Bu görevi silmek istediðinizden emin misiniz?');">
+                            <button type="submit" class="btn btn-danger">Sil</button>
+                        </form>
+                    </div>
+                </div>
+                    }
+            </div>
+            }
+        </div>
+    </div>
+</div>

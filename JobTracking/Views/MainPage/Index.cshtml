@@ -1,0 +1,117 @@
+@{
+    var userCount = ViewData["UserCount"] as int?;
+    var tasksAndCount = ViewData["TasksAndCount"] as Dictionary<string, int>;
+    var userLogs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<DateTime>>(ViewData["UserLogs"] as string);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullan�c� Veri Tablolar�</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sol Panel -->
+            <div class="col-md-3">
+                <div class="p-3 bg-light border rounded">
+                    <h3>Men�</h3>
+                    <form method="post" action="/ForEditProfile/Index">
+                        <button type="submit" class="btn btn-primary w-100 mb-2">Profili D�zenle</button>
+                    </form>
+                    <form asp-controller="BusinessPage" asp-action="Index" method="post">
+                        <button type="submit" class="btn btn-primary w-100 mb-2">�� Modeline Git</button>
+                    </form>
+                    <form asp-controller="Home" asp-action="TaskList" method="post">
+                        <button type="submit" class="btn btn-primary w-100 mb-2">�� Listesine Git</button>
+                    </form>
+                    <form asp-controller="MainPage" asp-action="Index" method="post">
+                        <button type="submit" class="btn btn-primary w-100">Ana Sayfa</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sa� Panel (Grafikler ve Loglar) -->
+            <div class="col-md-9">
+                <h1 class="mt-5">Kullan�c� Veri Tablolar�</h1>
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h3>Kullan�c� Say�s�</h3>
+                        <p>Toplam Kullan�c� Say�s�: @userCount</p>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h3>Tasks Durumlar�</h3>
+                        <canvas id="tasksStatusChart"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Kullan�c� Giri�leri</h3>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Giri� Zamanlar�</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var log in userLogs)
+                                {
+                                <tr>
+                                    <td>@log</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Tasks Status Data
+            var tasksAndCount = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(tasksAndCount));
+            var taskLabels = Object.keys(tasksAndCount);
+            var taskCounts = Object.values(tasksAndCount);
+
+            // Tasks Status Chart
+            var ctx2 = document.getElementById('tasksStatusChart').getContext('2d');
+            var tasksStatusChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: taskLabels,
+                    datasets: [{
+                        label: 'Tasks Status',
+                        data: taskCounts,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    responsive: true
+                }
+            });
+        });
+    </script>
+</body>
+</html>
