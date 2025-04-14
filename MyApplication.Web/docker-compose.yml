@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: yigit
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: JobTrackingDB
+    ports:
+      - "6667:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

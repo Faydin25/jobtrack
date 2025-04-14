@@ -1,0 +1,47 @@
+﻿@model MyApplication.Web.Models.BusinessPageViewModel
+@using TaskStatus = MyApplication.Web.Models.TaskStatus;
+
+<div class="list-container">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Task Adı</th>
+            <th>Açıklama</th>
+            <th>Durum</th>
+            <th>Kullanıcı</th>
+            <th>Oluşturulma Tarihi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model.Tasks)
+        {
+            <tr class="@GetStatusClass(task.Status)">
+                <td>@task.Title</td>
+                <td>@task.Description</td>
+                <td>@Enum.GetName(typeof(TaskStatus), task.Status)</td>
+                <td>@(task.User?.UserName ?? "Kullanıcı Yok")</td>
+                <td>@task.CreatedDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+</div>
+
+@functions {
+    string GetStatusClass(TaskStatus status)
+    {
+        switch (status)
+        {
+            case TaskStatus.ToDo:
+                return "table-warning";  // Bootstrap sınıfı ile sarı
+            case TaskStatus.InProgress:
+                return "table-primary";  // Bootstrap sınıfı ile mavi
+            case TaskStatus.Done:
+                return "table-success";  // Bootstrap sınıfı ile yeşil
+            default:
+                return "";
+        }
+    }
+}

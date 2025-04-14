@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["IsLoginPage"] = true;
+}
+
+<div class="login-container">
+    <img src="~/images/Tlogo.png" alt="Logo" class="mb-4" style="width: 100px; height: auto;">
+    <h2>Giriş Yap</h2>
+    <form method="post" action="/Home/Login">
+        <div class="form-group">
+            <label for="Username">Kullanıcı Adı</label>
+            <input type="text" class="form-control" id="Username" name="Username" required />
+        </div>
+        <div class="form-group">
+            <label for="Password">Şifre</label>
+            <input type="password" class="form-control" id="Password" name="Password" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Giriş Yap</button>
+    </form>
+    <div class="register-link">
+        Hesabınız yok mu? <a href="/Home/Register">Kayıt Ol</a>
+    </div>
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="error-message">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+}
