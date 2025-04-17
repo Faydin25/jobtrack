@@ -1,81 +1,43 @@
 ﻿@model User
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kullanıcı Profili</title>
-</head>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<body>
-    <div class="container mt-5">
-        <!-- Profil bilgileri başlığı -->
-        <h2 class="profile-header">Profil Bilgileri</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Profil Bilgileri</h2>
 
-        @if (Model != null)
-        {
-            <!-- Kart stilinde kullanıcı bilgileri -->
-            <div class="card profile-container">
-                <div class="card-body">
-                    <!-- Kullanıcı adı ve email bilgileri -->
-                    @if (@Model.PhotoPath != null)
-                    {
-                        <div class="text-center">
-                            <img src="/images/@Model.PhotoPath" class="profile-image" />
-                        </div>
-                    }
-                    <div class="profile-details">
-                        <p class="card-text"><strong>Kullanıcı Adı:</strong> @Model.UserName</p>
-                        <p class="card-text"><strong>Email:</strong> @Model.Email</p>
-                        @if (Model.DateOfBirth != null)
-                        {
-                            <p class="card-text"><strong>Doğum Tarihi:</strong> @Model.DateOfBirth?.ToString("dd.MM.yyyy")</p>
-                        }
-                    </div>
+    @if (Model != null)
+    {
+        <div class="card mx-auto shadow p-4" style="max-width: 500px;">
+            @if (Model.PhotoPath != null)
+            {
+                <div class="text-center mb-3">
+                    <img src="/images/@Model.PhotoPath" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;" />
                 </div>
-                <!-- Profili düzenleme butonu -->
-                <div class="card-footer profile-buttons">
-                    <form method="post" action="/ForEditProfile/Index">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Profili Düzenle
-                        </button>
-                    </form>
+            }
 
-                    <form asp-controller="BusinessPage" asp-action="Index" method="post">
-                        <button type="submit" class="btn btn-primary">İş Modeline Git</button>
-                    </form>
-
-                    <form asp-controller="Home" asp-action="TaskList" method="post">
-                        <button type="submit" class="btn btn-primary">İş Listesine Git</button>
-                    </form>
-                    <form asp-controller="MainPage" asp-action="Index" method="post">
-                        <button type="submit" class="btn btn-primary">Ana Sayfa</button>
-                    </form>
-                </div>
+            <div class="card-body">
+                <p class="card-text"><strong>Kullanıcı Adı:</strong> @Model.UserName</p>
+                <p class="card-text"><strong>Email:</strong> @Model.Email</p>
+                @if (Model.DateOfBirth != null)
+                {
+                    <p class="card-text"><strong>Doğum Tarihi:</strong> @Model.DateOfBirth?.ToString("dd.MM.yyyy")</p>
+                }
             </div>
-        }
-        else
-        {
-            <!-- Kullanıcı bilgileri yüklenemediği durumda gösterilecek mesaj -->
-            <div class="alert alert-warning" role="alert">
-                Kullanıcı bilgileri yüklenemedi.
-            </div>
-        }
-    </div>
-
-    @{
-        if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger">
-                @TempData["Error"]
-            </div>
-        }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            Kullanıcı bilgileri yüklenemedi.
+        </div>
     }
 
-    <!-- Bootstrap and JavaScript Dependencies -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
-</html>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center mt-3">
+            @TempData["Error"]
+        </div>
+    }
+</div>

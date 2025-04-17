@@ -19,26 +19,6 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sol Panel -->
-            <div class="col-md-3">
-                <div class="p-3 bg-light border rounded">
-                    <h3>Menü</h3>
-                    <form method="post" action="/ForEditProfile/Index">
-                        <button type="submit" class="btn btn-primary w-100 mb-2">
-                            <i class="fas fa-edit"></i> Profili Düzenle
-                        </button>
-                    </form>
-                    <form asp-controller="BusinessPage" asp-action="Index" method="post">
-                        <button type="submit" class="btn btn-primary w-100 mb-2">İş Modeline Git</button>
-                    </form>
-                    <form asp-controller="Home" asp-action="TaskList" method="post">
-                        <button type="submit" class="btn btn-primary w-100 mb-2">İş Listesine Git</button>
-                    </form>
-                    <form asp-controller="MainPage" asp-action="Index" method="post">
-                        <button type="submit" class="btn btn-primary w-100">Ana Sayfa</button>
-                    </form>
-                </div>
-            </div>
 
             <!-- Sağ Panel (Grafikler ve Loglar) -->
             <div class="col-md-9">
@@ -53,37 +33,8 @@
 
                 <div class="row mt-4">
                     <div class="col-md-6">
-                        <h3>Yaş Grupları</h3>
-                        <canvas id="ageGroupsChart"></canvas>
-                    </div>
-                    <div class="col-md-6">
                         <h3>Tasks Durumları</h3>
                         <canvas id="tasksStatusChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <h3>Kullanıcı Fotoğraf Durumu</h3>
-                        <canvas id="photoChart"></canvas>
-                    </div>
-                    <div class="col-md-6">
-                        <h3>Kullanıcı Girişleri</h3>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Giriş Zamanları</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var log in userLogs)
-                                {
-                                    <tr>
-                                        <td>@log</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
@@ -101,29 +52,6 @@
             var tasksAndCount = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(tasksAndCount));
             var taskLabels = Object.keys(tasksAndCount);
             var taskCounts = Object.values(tasksAndCount);
-
-            // Age Groups Chart
-            var ctx1 = document.getElementById('ageGroupsChart').getContext('2d');
-            var ageGroupsChart = new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels: ageLabels,
-                    datasets: [{
-                        label: 'Age Groups',
-                        data: ageCounts,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
 
             // Tasks Status Chart
             var ctx2 = document.getElementById('tasksStatusChart').getContext('2d');
@@ -155,31 +83,6 @@
                     },
                     responsive: true
                 }
-            });
-
-            // User Photo Status Chart
-            var ctx3 = document.getElementById('photoChart').getContext('2d');
-            var photoChart = new Chart(ctx3, {
-                type: 'pie',
-                data: {
-                    labels: ['Fotoğrafı Olan Kullanıcılar', 'Fotoğrafı Olmayan Kullanıcılar'],
-                    datasets: [{
-                        data: [@usersWithPhoto, @usersWithoutPhoto],
-                        backgroundColor: ['#36A2EB', '#FF6384'],
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Kullanıcıların Fotoğraf Durumu'
-                        }
-                    }
-                },
             });
         });
     </script>

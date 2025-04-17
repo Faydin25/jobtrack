@@ -9,71 +9,71 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = MyApplication_-_Backup.Web
 build_property.RootNamespace = MyApplication_-_Backup.Web
-build_property.ProjectDir = C:\Users\MaxWell\Desktop\jobtrack\MyApplication.Web\
+build_property.ProjectDir = C:\Users\MaxWell\Desktop\düzenlt\MyApplication.Web\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\MaxWell\Desktop\jobtrack\MyApplication.Web
+build_property.MSBuildProjectDirectory = C:\Users\MaxWell\Desktop\düzenlt\MyApplication.Web
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/BusinessPage/Index.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/BusinessPage/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVzaW5lc3NQYWdlXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/ForEditProfile/Index.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/ForEditProfile/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRm9yRWRpdFByb2ZpbGVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Home/Index.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Home/Privacy.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Home/Profile.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Home/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Home/Register.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Home/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Home/TablePage.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Home/TablePage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUYWJsZVBhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Home/TaskList.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Home/TaskList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUYXNrTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Home/UserLogs.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Home/UserLogs.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxVc2VyTG9ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/MainPage/Index.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/MainPage/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFpblBhZ2VcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Shared/Error.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/_ViewImports.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/_ViewStart.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MaxWell/Desktop/jobtrack/MyApplication.Web/Views/Shared/_Layout.cshtml]
+[C:/Users/MaxWell/Desktop/düzenlt/MyApplication.Web/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-rjcynepn9v

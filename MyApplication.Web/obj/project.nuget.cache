@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "p3uT3COd9fS6rxLk9C46akx3GlUWHYxVNAXa/cAMgwEmKJBqtkTspudCIKWiYVGtC5xhEOJIJxHJwACmjDNzQQ==",
+  "dgSpecHash": "uSLiVcPSo8fZGrh60USe8rMctCR2jVHa9x4mcGrrdfC7JpecQBZX+eQnm5BtHkg0+p5kuD1VyPkX8jCKFwmfVQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\MaxWell\\Desktop\\jobtrack\\MyApplication.Web\\MyApplication.Web.csproj",
+  "projectFilePath": "C:\\Users\\MaxWell\\Desktop\\düzenlt\\MyApplication.Web\\MyApplication.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MaxWell\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\MaxWell\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.0\\microsoft.aspnetcore.cryptography.internal.6.0.0.nupkg.sha512",

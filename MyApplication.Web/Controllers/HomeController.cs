@@ -127,13 +127,30 @@ namespace MyApplication.Web.Controllers
                 user.LogTimesJson = JsonConvert.SerializeObject(logTimes);
                 _context.SaveChanges();
 
-                return RedirectToAction("Profile");
+                return RedirectToAction("Index", "MainPage");
             }
             else
             {
                 ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı.");
                 return View("Index");
             }
+        }
+
+        [HttpPost]
+        public IActionResult ToggleTheme()
+        {
+            var currentTheme = Request.Cookies["theme"];
+            var newTheme = currentTheme == "dark" ? "light" : "dark";
+            Response.Cookies.Append("theme", newTheme, new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddYears(1)
+            });
+
+            string referer = Request.Headers["Referer"].ToString();
+            if (!string.IsNullOrEmpty(referer))
+                return Redirect(referer);
+
+            return RedirectToAction("Index", "Home");
         }
 
 

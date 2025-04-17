@@ -8,7 +8,7 @@ namespace MyApplication.Web.Data
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseNpgsql("Host=172.17.0.1;Port=6667;Database=JobTrackingDB;Username=yigit;Password=123");
+            optionsBuilder.UseNpgsql("Host=postgres;Port=5432;Database=JobTrackingDB;Username=yigit;Password=123");
 
             return new AppDbContext(optionsBuilder.Options);
         }
