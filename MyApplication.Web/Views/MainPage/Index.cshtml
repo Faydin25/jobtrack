@@ -17,62 +17,67 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row" style="min-height: 100vh; overflow-y: auto;">
+    <div class="container-fluid py-4">
+        <div class="row g-4">
 
-            <!-- Sol Panel (Loglar) -->
-            <div class="col-md-3 border-end" style="max-height: 100vh; overflow-y: auto;">
-                <h4 class="mt-4">Kullanıcı Logları</h4>
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr><th>Log Zamanı</th></tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var log in userLogs)
-                        {
-                            <tr><td>@log.ToString("dd.MM.yyyy HH:mm")</td></tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Sağ Panel (Grafikler ve Bilgiler) -->
-            <div class="col-md-9">
-                <h2 class="mt-4">Kullanıcı Veri Tabloları</h2>
-
-                <!-- Kartlar: Kullanıcı Sayısı ve Fotoğraf Durumu -->
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="card text-bg-primary mb-3">
-                            <div class="card-header">Toplam Kullanıcı</div>
-                            <div class="card-body">
-                                <h5 class="card-title">@userCount</h5>
-                            </div>
-                        </div>
+            <!-- Sol: Kullanıcı Logları -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">Kullanıcı Logları</h5>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card text-bg-success mb-3">
-                            <div class="card-header">Fotoğraflı Kullanıcı</div>
-                            <div class="card-body">
-                                <h5 class="card-title">@usersWithPhoto</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card text-bg-danger mb-3">
-                            <div class="card-header">Fotosuz Kullanıcı</div>
-                            <div class="card-body">
-                                <h5 class="card-title">@usersWithoutPhoto</h5>
-                            </div>
-                        </div>
+                    <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-striped table-sm mb-0">
+                            <thead class="table-light">
+                                <tr><th>Log Zamanı</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var log in userLogs)
+                                {
+                                    <tr><td>@log.ToString("dd.MM.yyyy HH:mm")</td></tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-                <!-- Görev Durumu Grafiği -->
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <h5>Task Durumları</h5>
-                        <canvas id="tasksStatusChart"></canvas>
+            <!-- Sağ: Görev Grafiği -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">Task Durumları</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="tasksStatusChart" style="width: 100%; height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kartlar: Kullanıcı Sayıları -->
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card text-bg-primary mb-3">
+                    <div class="card-header">Toplam Kullanıcı</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@userCount</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-bg-success mb-3">
+                    <div class="card-header">Fotoğraflı Kullanıcı</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@usersWithPhoto</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-bg-danger mb-3">
+                    <div class="card-header">Fotosuz Kullanıcı</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@usersWithoutPhoto</h5>
                     </div>
                 </div>
             </div>
@@ -109,6 +114,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true
