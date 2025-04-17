@@ -12,28 +12,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kullanıcı Veri Tabloları</title>
+    <title>Yönetim Paneli</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row" style="min-height: 100vh; overflow-y: auto;">
 
-            <!-- Sağ Panel (Grafikler ve Loglar) -->
+            <!-- Sol Panel (Loglar) -->
+            <div class="col-md-3 border-end" style="max-height: 100vh; overflow-y: auto;">
+                <h4 class="mt-4">Kullanıcı Logları</h4>
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr><th>Log Zamanı</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var log in userLogs)
+                        {
+                            <tr><td>@log.ToString("dd.MM.yyyy HH:mm")</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Sağ Panel (Grafikler ve Bilgiler) -->
             <div class="col-md-9">
-                <h1 class="mt-5">Kullanıcı Veri Tabloları</h1>
+                <h2 class="mt-4">Kullanıcı Veri Tabloları</h2>
 
+                <!-- Kartlar: Kullanıcı Sayısı ve Fotoğraf Durumu -->
                 <div class="row mt-4">
-                    <div class="col-md-12">
-                        <h3>Kullanıcı Sayısı</h3>
-                        <p>Toplam Kullanıcı Sayısı: @userCount</p>
+                    <div class="col-md-4">
+                        <div class="card text-bg-primary mb-3">
+                            <div class="card-header">Toplam Kullanıcı</div>
+                            <div class="card-body">
+                                <h5 class="card-title">@userCount</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-bg-success mb-3">
+                            <div class="card-header">Fotoğraflı Kullanıcı</div>
+                            <div class="card-body">
+                                <h5 class="card-title">@usersWithPhoto</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-bg-danger mb-3">
+                            <div class="card-header">Fotosuz Kullanıcı</div>
+                            <div class="card-body">
+                                <h5 class="card-title">@usersWithoutPhoto</h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Görev Durumu Grafiği -->
                 <div class="row mt-4">
                     <div class="col-md-6">
-                        <h3>Tasks Durumları</h3>
+                        <h5>Task Durumları</h5>
                         <canvas id="tasksStatusChart"></canvas>
                     </div>
                 </div>
@@ -41,31 +79,25 @@
         </div>
     </div>
 
+    <!-- Chart.js -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Age Groups Data
-            var ageGroups = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ageGroups));
-            var ageLabels = Object.keys(ageGroups).map(key => key + " years");
-            var ageCounts = Object.values(ageGroups);
-
-            // Tasks Status Data
             var tasksAndCount = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(tasksAndCount));
             var taskLabels = Object.keys(tasksAndCount);
             var taskCounts = Object.values(tasksAndCount);
 
-            // Tasks Status Chart
-            var ctx2 = document.getElementById('tasksStatusChart').getContext('2d');
-            var tasksStatusChart = new Chart(ctx2, {
-                type: 'bar', // Grafiğin tipi 'bar' olarak ayarlandı
+            var ctx = document.getElementById('tasksStatusChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
                 data: {
                     labels: taskLabels,
                     datasets: [{
-                        label: 'Tasks Status',
+                        label: 'Task Durumları',
                         data: taskCounts,
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
+                            'rgba(255, 99, 132, 0.3)',
+                            'rgba(54, 162, 235, 0.3)',
+                            'rgba(255, 206, 86, 0.3)'
                         ],
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
@@ -76,12 +108,12 @@
                     }]
                 },
                 options: {
+                    responsive: true,
                     scales: {
                         y: {
                             beginAtZero: true
                         }
-                    },
-                    responsive: true
+                    }
                 }
             });
         });

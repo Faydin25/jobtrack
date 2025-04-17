@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\MaxWell\\Desktop\\düzenlt\\MyApplication.Web\\MyApplication.Web.csproj": {}
+    "C:\\Users\\MaxWell\\Desktop\\Main\\MyApplication.Web\\MyApplication.Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\MaxWell\\Desktop\\düzenlt\\MyApplication.Web\\MyApplication.Web.csproj": {
+    "C:\\Users\\MaxWell\\Desktop\\Main\\MyApplication.Web\\MyApplication.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\MaxWell\\Desktop\\düzenlt\\MyApplication.Web\\MyApplication.Web.csproj",
+        "projectUniqueName": "C:\\Users\\MaxWell\\Desktop\\Main\\MyApplication.Web\\MyApplication.Web.csproj",
         "projectName": "MyApplication.Web",
-        "projectPath": "C:\\Users\\MaxWell\\Desktop\\düzenlt\\MyApplication.Web\\MyApplication.Web.csproj",
+        "projectPath": "C:\\Users\\MaxWell\\Desktop\\Main\\MyApplication.Web\\MyApplication.Web.csproj",
         "packagesPath": "C:\\Users\\MaxWell\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\MaxWell\\Desktop\\düzenlt\\MyApplication.Web\\obj\\",
+        "outputPath": "C:\\Users\\MaxWell\\Desktop\\Main\\MyApplication.Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
