@@ -1,14 +1,19 @@
-﻿using MyApplication.Web.Models; // Doğru namespace
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using MyApplication.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyApplication.Web.Data;
+using System.Collections.Generic;
+using System.Linq;
+
+using ModelsTask = MyApplication.Web.Models.Task;
+using ModelsTaskStatus = MyApplication.Web.Models.TaskStatus;
 
 namespace MyApplication.Web.Controllers
 {
     public class BusinessPageController : Controller
     {
         private readonly AppDbContext _context;
+
         public BusinessPageController(AppDbContext context)
         {
             _context = context;
@@ -17,13 +22,13 @@ namespace MyApplication.Web.Controllers
         public IActionResult Index(int? userId)
         {
             var users = _context.Users.ToList();
-            IEnumerable<MyApplication.Web.Models.Task> tasks = Enumerable.Empty<MyApplication.Web.Models.Task>();
+            IEnumerable<ModelsTask> tasks = Enumerable.Empty<ModelsTask>();
             if (userId.HasValue)
             {
                 tasks = _context.Tasks
-                                .Include(t => t.User)
-                                .Where(t => t.UserId == userId.Value)
-                                .ToList();
+                    .Include(t => t.User)
+                    .Where(t => t.UserId == userId.Value)
+                    .ToList();
             }
 
             var viewModel = new BusinessPageViewModel
@@ -36,6 +41,17 @@ namespace MyApplication.Web.Controllers
         }
 
         [HttpPost]
+        public IActionResult UpdateStatus(int id, ModelsTaskStatus status)
+        {
+            var task = _context.Tasks.Find(id);
+            if (task == null) return NotFound();
+
+            task.Status = status;
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
         public IActionResult DeleteTask(int taskId)
         {
             var task = _context.Tasks.Find(taskId);
@@ -43,13 +59,8 @@ namespace MyApplication.Web.Controllers
             {
                 _context.Tasks.Remove(task);
                 _context.SaveChanges();
-                TempData["Message"] = "Görev başarıyla silindi.";
             }
-            else
-            {
-                TempData["Error"] = "Görev bulunamadı.";
-            }
-            return RedirectToAction("Index"); // Görev listesi sayfasına geri yönlendir
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -60,30 +71,23 @@ namespace MyApplication.Web.Controllers
             {
                 task.Description = description;
                 _context.SaveChanges();
-                TempData["Message"] = "Açıklama güncellendi.";
-            }
-            else
-            {
-                TempData["Error"] = "Görev bulunamadı.";
             }
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult CreateTask(string title, string description, Models.TaskStatus status, int userId)
+        public IActionResult CreateTask(string title, string description, ModelsTaskStatus status, int userId)
         {
-            var newTask = new Models.Task
+            var newTask = new ModelsTask
             {
                 Title = title,
                 Description = description,
                 Status = status,
                 CreatedDate = DateTime.Now,
-                UserId = userId // Kullanıcı ID'sini atayın
+                UserId = userId
             };
             _context.Tasks.Add(newTask);
             _context.SaveChanges();
-
-            TempData["Message"] = "Yeni görev başarıyla oluşturuldu.";
             return RedirectToAction("Index");
         }
     }

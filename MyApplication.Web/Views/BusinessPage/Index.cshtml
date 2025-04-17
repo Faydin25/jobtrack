@@ -1,82 +1,14 @@
 ﻿@model MyApplication.Web.Models.BusinessPageViewModel
-@using TaskStatus = MyApplication.Web.Models.TaskStatus;
+@using TaskStatus = MyApplication.Web.Models.TaskStatus
 
-@{
-    ViewData["Title"] = "Business Page";
-}
-
-<script src="~/js/site.js"></script>
-
-
-<div class="task-container">
-    <h1 style="text-align:center">Görevler</h1>
-    <br />
+<div class="container">
+    <h1 class="text-center">Görevler</h1>
     <br />
 
-    <!-- Yeni Görev Ekleme Formu -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#taskModal">
-        Görev Ekle
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="taskModalLabel">Yeni Görev Ekle</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form içeriği burada -->
-                    <form method="post" action="@Url.Action("CreateTask", "BusinessPage")">
-                        @Html.AntiForgeryToken()
-                        <div class="form-group">
-                            <label for="title">Başlık:</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Açıklama:</label>
-                            <textarea class="form-control" id="description" name="description" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Durum:</label>
-                            <select class="form-control" id="status" name="status">
-                                @foreach (var status in Enum.GetValues(typeof(TaskStatus)))
-                                {
-                                    <option value="@status">@status</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="userId">Kullanıcı:</label>
-                            <select class="form-control" id="userId" name="userId" required>
-                                @foreach (var user in Model.Users)
-                                {
-                                    <option value="@user.Id">@user.UserName</option>
-                                }
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Görev Oluştur</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @section Scripts {
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    }
-
-    <br />
-    <br />
-    <form>
+    <form method="get" asp-action="Index" asp-controller="BusinessPage">
         <label for="userId">Kullanıcı Seçin:</label>
         <select id="userId" name="userId" class="form-control" onchange="this.form.submit()">
-            <option value="">Lütfen bir kullanıcı seçiniz</option>
+            <option value="">Lütfen kullanıcı seçin</option>
             @foreach (var user in Model.Users)
             {
                 <option value="@user.Id">@user.UserName</option>
@@ -84,36 +16,89 @@
         </select>
     </form>
 
-    <br /><br />
-    <div class="container-fluid ">
-        <div class="row">
-            @foreach (var status in Enum.GetValues(typeof(TaskStatus)))
-            {
-                <div class="col turkcell-border mx-1">
-                    <h1 class="text-center">@status.ToString()</h1>
-                    @foreach (var task in Model.Tasks.Where(t => t.Status == (TaskStatus)status))
-                    {
-                        <div class="card mb-1">
-                            <div class="card-header">
-                                @task.Title
-                            </div>
-                            <div class="card-body">
-                                <!-- Açıklama düzenleme formu -->
-                                <form method="post" action="@Url.Action("EditDescription", "BusinessPage")">
-                                    <input type="hidden" name="taskId" value="@task.TaskId" />
-                                    <textarea name="description" class="form-control">@task.Description</textarea>
-                                    <p>Oluşturulma Tarihi: @task.CreatedDate.ToString("dd/MM/yyyy ")</p>
-                                    <button type="submit" class="btn btn-primary">Kaydet</button>
-                                </form>
-                                <!-- Silme butonu için form -->
-                                <form method="post" action="@Url.Action("DeleteTask", "BusinessPage", new { taskId = task.TaskId })" onsubmit="return confirm('Bu görevi silmek istediğinizden emin misiniz?');">
-                                    <button type="submit" class="btn btn-danger">Sil</button>
-                                </form>
-                            </div>
-                        </div>
-                    }
-                </div>
-            }
+    <br />
+
+    <!-- Görev Oluşturma Butonu -->
+    <button class="btn btn-primary" data-toggle="modal" data-target="#taskModal">Görev Ekle</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="taskModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" asp-action="CreateTask" asp-controller="BusinessPage">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Yeni Görev Ekle</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="title" class="form-control mb-2" placeholder="Başlık" required />
+                        <textarea name="description" class="form-control mb-2" placeholder="Açıklama" required></textarea>
+                        <select name="status" class="form-control mb-2">
+                            @foreach (var status in Enum.GetValues(typeof(TaskStatus)))
+                            {
+                                <option value="@status">@status</option>
+                            }
+                        </select>
+                        <select name="userId" class="form-control" required>
+                            @foreach (var user in Model.Users)
+                            {
+                                <option value="@user.Id">@user.UserName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Ekle</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+
+    <br /><br />
+
+    <div class="row">
+        @foreach (var status in Enum.GetValues(typeof(TaskStatus)))
+        {
+            <div class="col-md-4">
+                <h4 class="text-center">@status</h4>
+                @foreach (var task in Model.Tasks.Where(t => t.Status == (TaskStatus)status))
+                {
+                    <div class="card mb-3">
+                        <div class="card-header">@task.Title</div>
+                        <div class="card-body">
+                            <form method="post" asp-action="EditDescription" asp-controller="BusinessPage">
+                                <input type="hidden" name="taskId" value="@task.TaskId" />
+                                <textarea name="description" class="form-control mb-2">@task.Description</textarea>
+                                <button class="btn btn-sm btn-warning">Açıklamayı Güncelle</button>
+                            </form>
+
+                            <p class="mt-2"><small>Oluşturulma: @task.CreatedDate.ToString("dd.MM.yyyy")</small></p>
+
+                            <!-- Statü değiştirme butonları -->
+                            <form method="post" asp-action="UpdateStatus" asp-controller="BusinessPage" class="mb-2">
+                                <input type="hidden" name="id" value="@task.TaskId" />
+                                @foreach (TaskStatus newStatus in Enum.GetValues(typeof(TaskStatus)))
+                                {
+                                    if (newStatus != task.Status)
+                                    {
+                                        <button name="status" value="@newStatus" class="btn btn-outline-secondary btn-sm mx-1">@newStatus</button>
+                                    }
+                                }
+                            </form>
+
+                            <form method="post" asp-action="DeleteTask" asp-controller="BusinessPage" onsubmit="return confirm('Silmek istediğinizden emin misiniz?');">
+                                <input type="hidden" name="taskId" value="@task.TaskId" />
+                                <button class="btn btn-sm btn-danger">Sil</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+}
