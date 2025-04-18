@@ -1,42 +1,52 @@
 using Microsoft.EntityFrameworkCore;
 using MyApplication.Web.Data;
-
+using MyApplication.Web.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
+// Veritabaný baðlantý ayarlarý
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
+// EmailValidatorService'in Dependency Injection'a eklenmesi
+builder.Services.AddScoped<EmailValidatorService>();
 
-// Add services to the container.
+// Servisler
 builder.Services.AddControllersWithViews();
-builder.Services.AddSession(option =>
+
+// Session ayarlarý
+builder.Services.AddSession(options =>
 {
-    //Süre 1 dk olarak belirlendi
-    option.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Session süresi 30 dakika
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// Middleware yapýlandýrmasý
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-app.UseSession();
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseSession();           // Session middleware
+app.UseHttpsRedirection(); // HTTPS yönlendirme
+app.UseStaticFiles();      // Statik dosyalar
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+// Uygulama çalýþtýrma
 app.Run();

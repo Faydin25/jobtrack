@@ -7,6 +7,7 @@ using MyApplication.Web.Models;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Security.Claims;
+using MyApplication.Web.Services;
 
 namespace MyApplication.Web.Controllers
 {
@@ -36,15 +37,18 @@ namespace MyApplication.Web.Controllers
         //------------------------------------------------
 
         private readonly AppDbContext _context;
-        public HomeController(AppDbContext context)
+        private readonly EmailValidatorService _emailValidatorService;
+        public HomeController(AppDbContext context, EmailValidatorService emailValidatorService)
         {
             _context = context;
+            _emailValidatorService = emailValidatorService;
         }
         //------------------------------------------------
 
         [HttpPost]
         public async Task<IActionResult> Register(User model)
         {
+            // Kullanıcı adı veya e-posta sistemde var mı?
             bool userNameExists = await _context.Users.AnyAsync(u => u.UserName == model.UserName);
             bool emailExists = await _context.Users.AnyAsync(u => u.Email == model.Email);
 
@@ -61,6 +65,14 @@ namespace MyApplication.Web.Controllers
                 return View();
             }
 
+            // Email domain geçerliliği kontrolü
+            if (!_emailValidatorService.CheckEmailDomainExists(model.Email))
+            {
+                ModelState.AddModelError("Email", "Geçersiz e-posta domaini.");
+                return View();
+            }
+
+            // Kayıt işlemi
             var user = new User { UserName = model.UserName, Email = model.Email, Password = model.Password };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

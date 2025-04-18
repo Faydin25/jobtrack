@@ -29,8 +29,9 @@
                         <li class="nav-item"><a class="nav-link" href="/Home/Profile">Profil</a></li>
                         <li class="nav-item"><a class="nav-link" href="/ForEditProfile/Index">Profili Düzenle</a></li>
                     </ul>
+
                     <ul class="navbar-nav">
-                        @if (userName != null)
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" href="/Home/Profile">
@@ -38,8 +39,10 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <form method="post" action="/Home/Logout">
-                                    <button class="btn btn-link nav-link" type="submit">Çıkış</button>
+                                <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
+                                    @* Güvenlik için AntiForgery token ekliyoruz *@
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger btn-sm mt-1">Çıkış</button>
                                 </form>
                             </li>
                         }

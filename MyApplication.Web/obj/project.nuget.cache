@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "F7kZgAQ+dteK54d9XIy54vxAxmOkkhHsYbtwespCs2Q68rzHDUg++SAANwhhyGyebedE0njMOu2FOjedkjFTmQ==",
+  "dgSpecHash": "Ic0PLMZmA7m8QWjJlcGDl1z3HE/D8bdPGJ281vTcBAkAvSGouKcCGxiZI3w3+Vsfsmi9fDUAeff4iPbZP9tOyg==",
   "success": true,
   "projectFilePath": "C:\\Users\\MaxWell\\Desktop\\Main\\MyApplication.Web\\MyApplication.Web.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\MaxWell\\.nuget\\packages\\dnsclient\\1.8.0\\dnsclient.1.8.0.nupkg.sha512",
     "C:\\Users\\MaxWell\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\MaxWell\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.0\\microsoft.aspnetcore.cryptography.internal.6.0.0.nupkg.sha512",
     "C:\\Users\\MaxWell\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.0\\microsoft.aspnetcore.cryptography.keyderivation.6.0.0.nupkg.sha512",
