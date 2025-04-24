@@ -8,14 +8,15 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Security.Claims;
 using MyApplication.Web.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace MyApplication.Web.Controllers
 {
-
-
+    [Authorize]
     public class HomeController : Controller
     {
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
@@ -29,6 +30,7 @@ namespace MyApplication.Web.Controllers
             return View(viewModel);
 
         }
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
@@ -45,6 +47,7 @@ namespace MyApplication.Web.Controllers
         }
         //------------------------------------------------
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(User model)
         {
@@ -112,40 +115,54 @@ namespace MyApplication.Web.Controllers
             return View(logs);
         }
 
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("Index", model);
+            }
+
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == model.UserName && u.Password == model.Password);
 
             if (user != null)
             {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    new AuthenticationProperties 
+                    { 
+                        IsPersistent = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
+                    });
+
                 HttpContext.Session.SetString("UserName", user.UserName);
                 HttpContext.Session.SetInt32("UserId", user.Id);
 
-                // JSON'dan log kayıtlarını deserialize edin
-                var logTimes = JsonConvert.DeserializeObject<List<DateTime>>(user.LogTimesJson) ?? new List<DateTime>();
-
-                // Yeni log kaydını ekleyin
+                // Update login logs
+                var logTimes = JsonConvert.DeserializeObject<List<DateTime>>(user.LogTimesJson ?? "[]");
                 logTimes.Add(DateTime.Now);
-
-                // Sadece son 10 log kaydını tutun
                 if (logTimes.Count > 10)
                 {
                     logTimes = logTimes.OrderByDescending(l => l).Take(10).ToList();
                 }
-
-                // Log kayıtlarını JSON olarak serialize edin ve kaydedin
                 user.LogTimesJson = JsonConvert.SerializeObject(logTimes);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction("Index", "MainPage");
             }
-            else
-            {
-                ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı.");
-                return View("Index");
-            }
+
+            ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı.");
+            return View("Index", model);
         }
 
         [HttpPost]
@@ -165,12 +182,30 @@ namespace MyApplication.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
-        public IActionResult Logout() //"Profile sayfasına koyucam.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
         {
-            return RedirectToAction("Index");
+            // Clear session
+            HttpContext.Session.Clear();
+            
+            // Sign out the user
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            
+            // Delete all cookies
+            foreach (var cookie in Request.Cookies.Keys)
+            {
+                Response.Cookies.Delete(cookie);
+            }
+            
+            // Add cache control headers to prevent browser caching
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate, private";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
+            
+            // Redirect to login page
+            return RedirectToAction("Index", "Home", null, "https");
         }
-
 
     }
 }

@@ -1,5 +1,5 @@
 ﻿@{
-    var userName = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+    var userName = (User?.Identity != null && User.Identity.IsAuthenticated) ? User.Identity.Name : null;
     var isLoginPage = ViewData["IsLoginPage"] as bool? ?? false;
 }
 
@@ -15,42 +15,47 @@
 </head>
 <body class="bg-light text-dark">
     @if (!isLoginPage)
-    {
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" href="/MainPage/Index">Ana Sayfa</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/BusinessPage/Index">İş Modeli</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/Home/TaskList">İş Listesi</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/Home/Profile">Profil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/ForEditProfile/Index">Profili Düzenle</a></li>
-                    </ul>
+{
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/MainPage/Index">Ana Sayfa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/BusinessPage/Index">İş Modeli</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/TaskList">İş Listesi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Profile">Profil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ForEditProfile/Index">Profili Düzenle</a></li>
+                    <li class="nav-item">
+                        <form asp-controller="Home" asp-action="Logout" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline-danger btn-sm mt-1 nav-link border-0 bg-transparent text-white">Çıkış</button>
+                        </form>
+                    </li>
+                </ul>
 
-                    <ul class="navbar-nav">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Home/Profile">
-                                    <i class="fas fa-user-circle"></i> @userName
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
-                                    @* Güvenlik için AntiForgery token ekliyoruz *@
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-outline-danger btn-sm mt-1">Çıkış</button>
-                                </form>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </nav>
-        </header>
-    }
+                <ul class="navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Profile">
+                            <i class="fas fa-user-circle"></i> @userName
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-outline-danger btn-sm mt-1">Çıkış</button>
+                        </form>
+                    </li>
+                    }
+                </ul>
+            </div>
+        </nav>
+    </header>
+}
 
     <main class="container py-4">
         @RenderBody()

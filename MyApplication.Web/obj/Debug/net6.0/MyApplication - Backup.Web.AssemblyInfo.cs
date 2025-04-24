@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MyApplication - Backup.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d7251302faedbe193d37b7758a622beb64f75b5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f82779627399ebc2c85ac74266fc5edd8e247d39")]
 [assembly: System.Reflection.AssemblyProductAttribute("MyApplication - Backup.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MyApplication - Backup.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

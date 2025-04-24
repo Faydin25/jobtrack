@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using MyApplication.Web.Data;
 using MyApplication.Web.Models;
-using System;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyApplication.Web.Controllers
 {
+    [Authorize]
     public class MainPageController : Controller
     {
         private readonly AppDbContext _context;
@@ -14,40 +14,51 @@ namespace MyApplication.Web.Controllers
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
-            string? _UserName = HttpContext.Session.GetString("UserName");
-            var _TUser = _context.Users.FirstOrDefault(u => u.UserName == _UserName);
-            var _UserLogs = _TUser.LogTimesJson;
+            try
+            {
+                string? userName = HttpContext.Session.GetString("UserName");
+                if (string.IsNullOrEmpty(userName))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
 
-            var users = _context.Users.Include(u => u.Tasks).ToList();
+                var currentUser = _context.Users
+                    .Include(u => u.Tasks)
+                    .FirstOrDefault(u => u.UserName == userName);
 
-            var _AgeGroups = GroupsAge(users);
+                if (currentUser == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
 
-            var _UserCount = _context.Users.Count();
+                var users = _context.Users.Include(u => u.Tasks).ToList();
+                var ageGroups = GroupsAge(users);
+                var userCount = users.Count;
+                var tasksAndCount = GetCountTasks(users);
 
-            var _TasksAndCount = GetCountTasks(users);
+                var usersWithPhoto = users.Count(u => !string.IsNullOrEmpty(u.PhotoPath));
+                var usersWithoutPhoto = users.Count(u => string.IsNullOrEmpty(u.PhotoPath));
 
+                ViewData["UsersWithPhoto"] = usersWithPhoto;
+                ViewData["UsersWithoutPhoto"] = usersWithoutPhoto;
+                ViewData["AgeGroups"] = ageGroups;
+                ViewData["UserCount"] = userCount;
+                ViewData["TasksAndCount"] = tasksAndCount;
+                ViewData["UserLogs"] = currentUser.LogTimesJson ?? "[]";
 
-            //var _TaskData = _context.Tasks.ToList();
-
-            //ViewData["UserData"] = _UserData;
-            //ViewData["TaskData"] = _TaskData;
-
-            var _usersWithPhoto = users.Count(u => !string.IsNullOrEmpty(u.PhotoPath));
-            var _usersWithoutPhoto = users.Count(u => string.IsNullOrEmpty(u.PhotoPath));
-
-            ViewData["UsersWithPhoto"] = _usersWithPhoto;
-            ViewData["UsersWithoutPhoto"] = _usersWithoutPhoto;
-
-            ViewData["AgeGroups"] = _AgeGroups;
-            ViewData["UserCount"] = _UserCount;
-            ViewData["TasksAndCount"] = _TasksAndCount;
-            ViewData["UserLogs"] = _UserLogs;
-            return View();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Log the error if you have logging configured
+                return RedirectToAction("Index", "Home");
+            }
         }
 
-        public int CalculateAge(DateTime? dateOfBirth)
+        private int CalculateAge(DateTime? dateOfBirth)
         {
             if (!dateOfBirth.HasValue)
             {
@@ -60,43 +71,47 @@ namespace MyApplication.Web.Controllers
             return age;
         }
 
-        private Dictionary<int, int> GroupsAge(List <User> users)
+        private Dictionary<int, int> GroupsAge(List<User> users)
         {
-            var ageGruops = new Dictionary<int, int>();
+            var ageGroups = new Dictionary<int, int>();
             foreach (var user in users)
             {
                 var age = CalculateAge(user.DateOfBirth);
-                if (ageGruops.ContainsKey(age)) ageGruops[age]++;
+                if (ageGroups.ContainsKey(age)) 
+                    ageGroups[age]++;
                 else
-                    ageGruops[age] = 1;
+                    ageGroups[age] = 1;
             }
-            return ageGruops;
+            return ageGroups;
         }
 
         private Dictionary<string, int> GetCountTasks(List<User> users)
         {
             var countTasks = new Dictionary<string, int>
-    {
-        { "ToDo", 0 },
-        { "InProgress", 0 },
-        { "Done", 0 }
-    };
+            {
+                { "ToDo", 0 },
+                { "InProgress", 0 },
+                { "Done", 0 }
+            };
 
             foreach (var user in users)
             {
-                foreach (var task in user.Tasks)
+                if (user.Tasks != null)
                 {
-                    switch (task.Status)
+                    foreach (var task in user.Tasks)
                     {
-                        case Models.TaskStatus.ToDo:
-                            countTasks["ToDo"]++;
-                            break;
-                        case Models.TaskStatus.InProgress:
-                            countTasks["InProgress"]++;
-                            break;
-                        case Models.TaskStatus.Done:
-                            countTasks["Done"]++;
-                            break;
+                        switch (task.Status)
+                        {
+                            case Models.TaskStatus.ToDo:
+                                countTasks["ToDo"]++;
+                                break;
+                            case Models.TaskStatus.InProgress:
+                                countTasks["InProgress"]++;
+                                break;
+                            case Models.TaskStatus.Done:
+                                countTasks["Done"]++;
+                                break;
+                        }
                     }
                 }
             }
