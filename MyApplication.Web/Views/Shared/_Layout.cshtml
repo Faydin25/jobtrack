@@ -26,7 +26,6 @@
                     <li class="nav-item"><a class="nav-link" href="/MainPage/Index">Ana Sayfa</a></li>
                     <li class="nav-item"><a class="nav-link" href="/BusinessPage/Index">İş Modeli</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Home/TaskList">İş Listesi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Profile">Profil</a></li>
                     <li class="nav-item"><a class="nav-link" href="/ForEditProfile/Index">Profili Düzenle</a></li>
                     <li class="nav-item">
                         <form asp-controller="Home" asp-action="Logout" method="post" class="d-inline">
@@ -43,12 +42,6 @@
                         <a class="nav-link" href="/Home/Profile">
                             <i class="fas fa-user-circle"></i> @userName
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-outline-danger btn-sm mt-1">Çıkış</button>
-                        </form>
                     </li>
                     }
                 </ul>
